@@ -555,7 +555,6 @@ document.getElementById('loveQuiz').addEventListener('submit', function(e) {
     videoPlayer.src = item.src;
     videoTitle.textContent = item.title;
     videoPlayer.load();
-    videoPlayer.play().catch(() => {}); // silent autoplay fail
     highlightThumbnail(index);
   }
 
