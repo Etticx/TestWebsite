@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Girlfriend Day Cayang!❤️</title>
+    <!-- Google Fonts: Inter for a modern, clean look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Basic Reset & Body Styling */
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #ffebee; /* Light Pink Background */
+            color: #4a4a4a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative; /* Needed for absolute positioning of plushies outside container */
+            overflow-x: hidden; /* Prevent horizontal scroll from plushies */
+        }
+
+        /* Main Container for the Website Content */
+        .container {
+            background-color: #ffffff;
+            border-radius: 20px; /* Rounded corners */
+            box-shadow: 0 10px 25px rgba(255, 105, 180, 0.2); /* Pink shadow */
+            padding: 30px;
+            max-width: 900px;
+            width: 100%;
+            box-sizing: border-box;
+            animation: fadeIn 1s ease-out;
+            position: relative; /* For z-index to work correctly with plushies */
+            z-index: 2; /* Ensure container is above the peeking plushie */
+        }
+
+        /* Navigation Bar Styling */
+        .nav-bar {
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            background-color: #f8bbd0; /* Slightly darker pink for nav */
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.1);
+        }
+
+        .nav-button {
+            background-color: #ff80ab; /* Medium Pink */
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px; /* Pill-shaped buttons */
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-button:hover {
+            background-color: #ff69b4; /* Darker pink on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-button.active {
+            background-color: #e91e63; /* Active button pink */
+            box-shadow: 0 5px 10px rgba(255, 105, 180, 0.4);
+            transform: translateY(0);
+        }
+
+        /* Section Content Styling */
+        .section-content {
+            display: none; /* Hidden by default */
+            text-align: center;
+            padding: 20px;
+            animation: fadeIn 0.7s ease-out;
+        }
+
+        .section-content.active {
+            display: block; /* Show active section */
+        }
+
+        h1, h2 {
+            color: #e91e63; /* Deep pink for headings */
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 3.5em; /* Larger for main title */
+        }
+
+        h2 {
+            font-size: 2.5em; /* Slightly smaller for section titles */
+        }
+
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* Image Styling */
+        .section-image {
+            max-width: 500px; /* Max width for the image */
+            max-height: 350px; /* Max height for the image */
+            width: 100%; /* Ensure it scales down on smaller screens */
+            height: auto; /* Maintain aspect ratio when scaling */
+            object-fit: cover; /* Crop to cover the area if aspect ratio differs */
+            border-radius: 15px; /* Rounded images */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .section-image:hover {
+            transform: scale(1.02);
+        }
+
+        /* Plushie Styling */
+        .plushie {
+            position: absolute;
+            width: 120px; /* Adjust plushie size */
+            height: 120px;
+            object-fit: contain;
+            transition: transform 0.5s ease-in-out;
+            z-index: 1; /* Default z-index */
+        }
+
+        .plushie.left {
+            top: 25%; /* Position relative to viewport */
+            left: 5%;
+            transform: rotate(-15deg); /* Sideways effect */
+        }
+
+        .plushie.right {
+            bottom: 15%; /* Position relative to viewport */
+            right: 5%;
+            transform: rotate(10deg); /* Slightly rotated */
+            z-index: 0; /* Behind the container */
+        }
+
+        .plushie:hover {
+            transform: scale(1.1) rotate(0deg); /* Slight hover effect */
+        }
+
+        /* Photo Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Responsive grid */
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 150px; /* Fixed height for gallery images */
+            object-fit: cover; /* Crop to fit */
+            display: block;
+            border-radius: 10px;
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(255, 105, 180, 0.7); /* Semi-transparent pink overlay */
+            color: white;
+            padding: 8px;
+            font-size: 0.9em;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-caption {
+            opacity: 1;
+        }
+
+        /* List Styling for Memories */
+        .memory-list {
+            list-style: none; /* Remove default bullet points */
+            padding: 0;
+            text-align: left;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        .memory-list li {
+            background-color: #fff3f8; /* Very light pink for list items */
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-start;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .memory-list li span {
+            margin-right: 10px;
+            color: #ff80ab; /* Pink heart emoji color */
+            font-size: 1.2em;
+        }
+
+        /* Footer Styling */
+        .footer {
+            margin-top: 30px;
+            color: #e91e63;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 1024px) {
+            .plushie.left { left: 2%; width: 100px; height: 100px; }
+            .plushie.right { right: 2%; width: 100px; height: 100px; }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5em; }
+            h2 { font-size: 2em; }
+            .nav-button {
+                font-size: 1em;
+                padding: 10px 20px;
+            }
+            .container { padding: 20px; }
+            .gallery-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+            /* Keep plushies visible but adjust their positioning slightly or size if needed */
+            .plushie {
+                width: 80px; /* Smaller plushies on tablets */
+                height: 80px;
+                top: auto; /* Remove fixed top/bottom to allow more flexible positioning */
+                bottom: 5%;
+                left: 5%;
+                right: 5%;
+                /* You might need to adjust left/right values or even use flexbox for better centering */
+            }
+            .plushie.left { transform: rotate(-10deg); }
+            .plushie.right { transform: rotate(5deg); }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.8em; }
+            .nav-bar { gap: 10px; padding: 10px; }
+            .nav-button {
+                font-size: 0.9em;
+                padding: 8px 15px;
+            }
+            p { font-size: 1em; }
+            .gallery-grid { grid-template-columns: 1fr; } /* Single column on very small screens */
+            .gallery-item img { height: 200px; }
+            .plushie { display: none; } /* Hide plushies on very small screens (phones) */
+        }
+    </style>
+    <link rel="icon" href="Pics/unnyheader.png" type="image/x-icon">
+
+</head>
+<body>
+
+    <div class="container">
+        <!-- Navigation Bar -->
+        <nav class="nav-bar">
+            <button class="nav-button active" onclick="showSection('home')">Home</button>
+            <button class="nav-button" onclick="showSection('gallery')">Gallery</button>
+            <button class="nav-button" onclick="showSection('memories')">Reason</button>
+            <button class="nav-button" onclick="showSection('message')">Open This</button>
+            <button class="nav-button" onclick="showSection('quiz')">Quiz</button>
+            <button class="nav-button" onclick="showSection('videos')">Video</button>
+
+        </nav>
+
+        <!-- Home Section -->
+        <div id="home" class="section-content active">
+            <h1>Happy Girlfriend Day Cayang!</h1>
+            <p>A little piece of my heart, just for you. ❤️</p>
+            <img src="Pics/MAIN.JPG" alt="Cute Birthday Illustration" class="section-image"
+                 onerror="this.onerror=null;this.src='https://placehold.co/600x400/FFC0CB/FFFFFF?text=Image+Not+Found';">
+            <p>
+                Baby abang is the best Girlfriend ever, beats every girl in the world!!. Abang sayang baby and baby
+                are the only one that i want to be with forever. I hope baby like this little surprise
+                website I made just for you. It's a small token of my love and appreciation for all the joy you bring into my life.
+            </p>
+        </div>
+
+        <!-- Photo Gallery Section -->
+        <div id="gallery" class="section-content">
+            <h2>Memories kita sayang!!</h2>
+            <div class="gallery-grid">
+                <!-- Replace with actual image URLs and captions -->
+                <div class="gallery-item">
+                    <img src="Pics/Pic1.jpg" alt="Memory 1"
+                         onerror="this.onerror=null;this.src='https://placehold.co/300x200/FFB6C1/FFFFFF?text=Image+Not+Found';">
+                    <div class="gallery-caption">First date kita yayang!s</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="Pics/Pic2.jpg" alt="Memory 2"
+                         onerror="this.onerror=null;this.src='https://placehold.co/300x200/FFB6C1/FFFFFF?text=Image+Not+Found';">
+                    <div class="gallery-caption">Masa ni kita nangis sama sama hehe.</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="Pics/Pic3.jpg" alt="Memory 3"
+                         onerror="this.onerror=null;this.src='https://placehold.co/300x200/FFB6C1/FFFFFF?text=Image+Not+Found';">
+                    <div class="gallery-caption">Our first theme park date.</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="Pics/Pic4.jpg" alt="Memory 4"
+                         onerror="this.onerror=null;this.src='https://placehold.co/300x200/FFB6C1/FFFFFF?text=Image+Not+Found';">
+                    <div class="gallery-caption">First time Karaoke sama sama woo</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="Pics/Pic5.jpg" alt="Memory 5"
+                         onerror="this.onerror=null;this.src='https://placehold.co/300x200/FFB6C1/FFFFFF?text=Image+Not+Found';">
+                    <div class="gallery-caption">waterpark!!.</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="Pics/Pic6.jpg" alt="Memory 6"
+                         onerror="this.onerror=null;this.src='https://placehold.co/300x200/FFB6C1/FFFFFF?text=Image+Not+Found';">
+                    <div class="gallery-caption">Library date~.</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="Pics/Pic7.jpg" alt="Memory 7"
+                         onerror="this.onerror=null;this.src='https://placehold.co/300x200/FFB6C1/FFFFFF?text=Image+Not+Found';">
+                    <div class="gallery-caption">Eow.</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="Pics/Pic8.jpg" alt="Memory 8"
+                         onerror="this.onerror=null;this.src='https://placehold.co/300x200/FFB6C1/FFFFFF?text=Image+Not+Found';">
+                    <div class="gallery-caption">Bajet.</div>
+                </div>
+            </div>
+            <p class="mt-8">Hover kat gambar yayang!</p>
+        </div>
+
+        <!-- Memories/Reasons Why I Love You Section -->
+        <div id="memories" class="section-content">
+            <h2>Why You're So Special To Me</h2>
+            <ul class="memory-list">
+                <li><span>💖</span> Baby asham.</li>
+                <li><span>💖</span> Baby always accept for who abang is</li>
+                <li><span>💖</span> The way you always support me sayang, no matter what.</li>
+                <li><span>💖</span> Your vast knowledge in food and movies!!.</li>
+                <li><span>💖</span> Selalu support i if im in kesusahan.</li>
+                <li><span>💖</span> Suka cabut misai amang.</li>
+                <li><span>💖</span> Your beautiful bare faceeeee.</li>
+                <li><span>💖</span> Muka baby yang wangi.</li>
+            </ul>
+            <p>And banyak lagi sebenarnye hehe.</p>
+        </div>
+
+        <!-- Final Message / Gift Reveal Section -->
+        <div id="message" class="section-content">
+    <h2 style="font-family: 'Inter', sans-serif; color: #e91e63;">A Love Note 💌</h2>
+    <div style="
+        background-color: #fff0f5;
+        border: 2px dashed #ff80ab;
+        border-radius: 15px;
+        padding: 30px;
+        max-width: 700px;
+        margin: 0 auto;
+        font-size: 1.1em;
+        line-height: 1.8;
+        color: #4a4a4a;
+        box-shadow: 0 8px 20px rgba(255, 105, 180, 0.1);
+        text-align: left;
+        white-space: pre-wrap;
+    ">
+        Hey Afina~,<br><br>
+
+        I just want you to know how much you mean to me. Every single moment with you feels like a gift I never knew I needed. You are the light of my life, the softness in my heart, and the reason my days are filled with joy and purpose.<br><br>
+
+        I love the way you smile, the way you listen, and how you always understand me even when I don’t say anything (always tau bila i lapar). You’re not just my girlfriend, you’re my safe space, my partner, my everything. I never knew love could feel this warm, this deep, and this safe until I met you.<br><br>
+
+        No matter what happens in life, I want you to always remember that you are loved beyond words, cherished beyond measure, and perfect in every way to me. Thank you for being the most beautiful part of my world and I hope it stays that way. 💗<br><br>
+
+        I hope this small website yang biasa je ni brings a smile to your face like you always do for me. You're the reason I believe in forever!!!<br><br>
+
+        Love you always and forever,<br>
+        — Alif Asyraf ❤️
+    </div>
+</div>
+
+<!-- Relationship Quiz Section -->
+<div id="quiz" class="section-content">
+    <h2>How Well Do Baby Remember Our Relationship?</h2>
+    <form id="loveQuiz" style="text-align: left; max-width: 600px; margin: 0 auto;">
+        <div class="quiz-question">
+            <p><strong>1. Where was our first date before KL?</strong></p>
+            <label><input type="radio" name="q1" value="correct"> Jalan Jalan dekat Kampus UiTM Dulu kita</label><br>
+            <label><input type="radio" name="q1" value="wrong"> Segamat City</label><br>
+            <label><input type="radio" name="q1" value="wrong"> NR</label>
+        </div><br>
+
+        <div class="quiz-question">
+            <p><strong>2. What was the first hadiah baby dapat from me?</strong></p>
+            <label><input type="radio" name="q2" value="correct"> Cincinnn</label><br>
+            <label><input type="radio" name="q2" value="wrong"> Gelangggg</label><br>
+            <label><input type="radio" name="q2" value="wrong"> Makanan</label>
+        </div><br>
+
+        <div class="quiz-question">
+            <p><strong>3. What is abang’s nickname from baby?</strong></p>
+            <label><input type="radio" name="q3" value="wrong"> Bangla</label><br>
+            <label><input type="radio" name="q3" value="correct"> Amang</label><br>
+            <label><input type="radio" name="q3" value="wrong"> Sayur</label>
+        </div><br>
+
+        <button type="submit" class="nav-button" style="margin-top: 15px;">Submit Answers</button>
+    </form>
+
+    <div id="quizResult" style="display:none; text-align: center; margin-top: 30px;"></div>
+    </div>
+</div>
+<script>
+            // Relationship quiz logic
+document.getElementById('loveQuiz').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const q1 = document.querySelector('input[name="q1"]:checked');
+    const q2 = document.querySelector('input[name="q2"]:checked');
+    const q3 = document.querySelector('input[name="q3"]:checked');
+
+    if (!q1 || !q2 || !q3) {
+        alert("Please answer all questions first! 💌");
+        return;
+    }
+
+    const resultDiv = document.getElementById('quizResult');
+    resultDiv.style.display = 'block';
+
+    const isCorrect = q1.value === 'correct' && q2.value === 'correct' && q3.value === 'correct';
+
+    if (isCorrect) {
+        resultDiv.innerHTML = `
+            <div style="
+                background: #fff0f5;
+                border: 4px double #e91e63;
+                border-radius: 20px;
+                padding: 30px;
+                max-width: 600px;
+                margin: 0 auto;
+                box-shadow: 0 10px 20px rgba(255, 105, 180, 0.1);
+                font-family: 'Inter', sans-serif;
+            ">
+                <h2 style="color: #e91e63;">🎓 Certificate of Love</h2>
+                <p style="font-size: 1.1em;">This certifies that</p>
+                <h1 style="color: #d81b60;">Afina sayang❤️</h1>
+                <p style="font-size: 1.1em;">
+                    has officially passed the<br>
+                    <strong>Relationship Knowledge Quiz</strong><br>
+                   proving her status as the<br>
+                    <strong style="color: #c2185b;">Best Girlfriend in the Entire World</strong>.
+                </p>
+                <p style="margin-top: 25px; font-size: 0.9em; color: #777;">
+                    Awarded by<br>
+                    <strong>Unny</strong>
+                </p>
+            </div>
+        `;
+    } else {
+        resultDiv.innerHTML = `
+            <h3 style="color: #e91e63;">Oops! Try again, sayang 💞</h3>
+            <p style="font-size: 1.1em;">Almost there! You still have all my love hehe 💘</p>
+            <p>Try again and get your cute certificate!</p>
+        `;
+    }
+});
+</script>
+
+<style>
+    #quizResult div {
+    animation: fadeIn 1s ease-in-out;
+}
+
+</style>
+
+<!-- Video Gallery Section -->
+<div id="videos" class="section-content">
+  <h2 style="color: #e91e63; font-family: 'Inter', sans-serif;">Our Cute Videos!! 🎥</h2>
+
+  <div id="video-player-wrapper" style="max-width: 800px; margin: 0 auto; position: relative;">
+    <!-- Video Element -->
+<div style="width: 100%; max-width: 800px; height: 450px; display: flex; align-items: center; justify-content: center; background-color: #000; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(233,30,99,0.2);">
+  <video id="videoPlayer" controls style="max-height: 100%; max-width: 100%; object-fit: contain; background-color: black;">
+    <source src="Pics/Vid1.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+
+    <!-- Title -->
+    <div id="videoTitle" style="margin-top: 12px; text-align: center; font-weight: 600; font-size: 1.2em; color: #d81b60;">
+      Cute Memory #1
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div style="display: flex; justify-content: space-between; margin-top: 15px; gap: 10px; flex-wrap: wrap;">
+      <button id="prevBtn" class="nav-button" style="flex:1; min-width:120px;">◀ Previous</button>
+      <button id="nextBtn" class="nav-button" style="flex:1; min-width:120px;">Next ▶</button>
+    </div>
+
+    <!-- Thumbnails -->
+    <div id="thumbs" style="display:flex; gap:10px; overflow-x:auto; margin-top: 20px; padding-bottom:5px;">
+      <!-- Thumbnails populated by JS -->
+    </div>
+  </div>
+</div>
+
+<script>
+  const playlist = [
+    { title: "Videooo #1", src: "Pics/Vid1.mp4" },
+    { title: "Videooo #2", src: "Pics/Vid2.mp4" },
+    { title: "Videooo #3", src: "Pics/Vid3.mp4" },
+    { title: "Videooo #4", src: "Pics/Vid4.mp4" },
+    { title: "Videooo #5", src: "Pics/Vid5.mp4" }
+  ];
+
+  let currentIndex = 0;
+  const videoPlayer = document.getElementById("videoPlayer");
+  const videoTitle = document.getElementById("videoTitle");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const thumbsContainer = document.getElementById("thumbs");
+
+  function loadVideo(index) {
+    const item = playlist[index];
+    if (!item) return;
+    videoPlayer.src = item.src;
+    videoTitle.textContent = item.title;
+    videoPlayer.load();
+    videoPlayer.play().catch(() => {}); // silent autoplay fail
+    highlightThumbnail(index);
+  }
+
+  prevBtn.addEventListener("click", () => {
+    currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+    loadVideo(currentIndex);
+  });
+
+  nextBtn.addEventListener("click", () => {
+    currentIndex = (currentIndex + 1) % playlist.length;
+    loadVideo(currentIndex);
+  });
+
+  // Keyboard navigation
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") nextBtn.click();
+    if (e.key === "ArrowLeft") prevBtn.click();
+  });
+
+  // Build Thumbnails
+  playlist.forEach((item, idx) => {
+    const wrapper = document.createElement("div");
+    wrapper.style.cursor = "pointer";
+    wrapper.style.flex = "0 0 auto";
+    wrapper.style.borderRadius = "10px";
+    wrapper.style.overflow = "hidden";
+    wrapper.style.boxShadow = "0 5px 15px rgba(233,30,99,0.2)";
+    wrapper.style.border = idx === currentIndex ? "3px solid #e91e63" : "3px solid transparent";
+    wrapper.style.width = "120px";
+    wrapper.style.height = "67.5px"; // 16:9 ratio
+
+    const thumb = document.createElement("video");
+    thumb.src = item.src;
+    thumb.muted = true;
+    thumb.playsInline = true;
+    thumb.style.width = "100%";
+    thumb.style.height = "100%";
+    thumb.style.objectFit = "cover";
+    thumb.currentTime = 0.01;
+
+    thumb.addEventListener("loadeddata", () => {
+      thumb.pause();
+    });
+
+    wrapper.addEventListener("click", () => {
+      currentIndex = idx;
+      loadVideo(currentIndex);
+    });
+
+    wrapper.appendChild(thumb);
+    thumbsContainer.appendChild(wrapper);
+  });
+
+  function highlightThumbnail(activeIdx) {
+    Array.from(thumbsContainer.children).forEach((wrapper, idx) => {
+      wrapper.style.border = idx === activeIdx ? "3px solid #e91e63" : "3px solid transparent";
+    });
+  }
+
+  // Initial load
+  window.addEventListener("DOMContentLoaded", () => {
+    loadVideo(currentIndex);
+  });
+</script>
+
+    </div>
+
+    <footer class="footer">
+        <p>&copy; <span id="current-year"></span> Made with ❤️ By Eow Mok, Eow Udung, Unny, Ango, Gajah, and Amang</p>
+    </footer>
+
+    <!-- Plushie Placeholders -->
+    <img src="Pics/eow.png" alt="Plushie 1" class="plushie left"
+         onerror="this.onerror=null;this.src='https://placehold.co/120x120/FFD1DC/FF69B4?text=Plushie1';">
+    <img src="Pics/unny.png" alt="Plushie 2" class="plushie right"
+         onerror="this.onerror=null;this.src='https://placehold.co/120x120/FFD1DC/FF69B4?text=Plushie2';">
+
+    <script>
+        // JavaScript for tab switching
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Deactivate all buttons
+            const buttons = document.querySelectorAll('.nav-button');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show the selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Activate the corresponding button
+            const activeButton = document.querySelector(`.nav-button[onclick="showSection('${sectionId}')"]`);
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+
+            // Plushies will now always be visible due to CSS.
+            // No need for conditional display logic here anymore.
+            // const plushies = document.querySelectorAll('.plushie');
+            // if (sectionId === 'home') {
+            //     plushies.forEach(p => p.style.display = 'block');
+            // } else {
+            //     plushies.forEach(p => p.style.display = 'none');
+            // }
+        }
+
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Initial load: ensure the home section is active
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('home');
+        });
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        // Confetti effect on page load
+        window.onload = function() {
+            confetti({
+                particleCount: 200,
+                spread: 90,
+                origin: { y: 0.6 }
+            });
+        };
+    </script>
+
+</body>
+</html>
